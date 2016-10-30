@@ -1,0 +1,9 @@
+[submodule "libs/bdwgc"]
+	path = libs/bdwgc
+	url = https://github.com/ivmai/bdwgc.git
+[submodule "libs/slog"]
+	path = libs/slog
+	url = https://github.com/kala13x/slog.git
+[submodule "libs/libatomic_ops"]
+	path = libs/libatomic_ops
+	url = https://github.com/ivmai/libatomic_ops.git
