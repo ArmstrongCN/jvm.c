@@ -210,6 +210,7 @@ static void* parseConstantPool(Stream *stream, uint16_t size){
                     slog(0, SLOG_ERROR, "Reading ClassFile Error.");
                     return NULL;
                 }
+                i++;
                 break;
             case CONST_CONSTANTPOOLINFO_TAG_DOUBLE: 
                 array[i] = (void*)cp_parse_doubleInfo(stream);
@@ -217,6 +218,7 @@ static void* parseConstantPool(Stream *stream, uint16_t size){
                     slog(0, SLOG_ERROR, "Reading ClassFile Error.");
                     return NULL;
                 }
+                I++;
                 break;
             case CONST_CONSTANTPOOLINFO_TAG_NAME_AND_TYPE: 
                 array[i] = (void*)cp_parse_nameAndTypeInfo(stream);
