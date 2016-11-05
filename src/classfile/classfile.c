@@ -940,8 +940,8 @@ static ElementValue* parseElementValue(Stream *stream, ElementValue *value){
             }
             break;
         default:
-                  error("ElementValue", reader->Position());
-                  return NULL;
+            error("ElementValue", reader->Position());
+            return NULL;
     }
     return value;
 }
@@ -1076,6 +1076,281 @@ static Attribute_RuntimeInvisibleParameterAnnotations* attr_parse_runtimeInvisib
     }
     return attr;
 }
+
+static TypeAnnotaion* parseTypeAnnotation(Strem *stream, ClassFile *classfile, TypeAnnotaion *annotation){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    if(0<=reader->ReadUint8(stream, &annotation->target_type)){
+        error("TypeAnnotation Attribute", reader->Position());
+        return NULL;
+    }
+
+    switch(annotation->target_type){
+        case 0x00:
+        case 0x01:
+            if(0<=reader->ReadUint8(stream, &annotation->target_info.type_parameter_target.type_parameter_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x10:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.super_type_target.supertype_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x11:
+        case 0x12:
+            if(0<=reader->ReadUint8(stream, &annotation->target_info.type_parameter_bound_target.type_parameter_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            if(0<=reader->ReadUint8(stream, &annotation->target_info.type_parameter_bound_target.bound_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x13:
+        case 0x14:
+        case 0x15:
+            // EmptyTarget
+            break;
+        case 0x16:
+            if(0<=reader->ReadUint8(stream, &annotation->target_info.formal_parameter_target.formal_parameter_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x17:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.throws_target.throws_type_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x40:
+        case 0x41:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.localvar_target.count)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            annotation->target_info.localvar_target.elements = (LocalvarElement*)GC_malloc(sizeof(LocalvarElement)*annotation->target_info.localvar_target.count);
+            for(int i=0;i<annotation->target_info.localvar_target.count;i++){
+                LocalvarElement *elememt = annotation->target_info.localvar_target.elements[i];
+                if(0<=reader->ReadUint16(stream, &element->start_pc)){
+                    error("TypeAnnotation Attribute", reader->Position());
+                    return NULL;
+                }
+                if(0<=reader->ReadUint16(stream, &element->length)){
+                    error("TypeAnnotation Attribute", reader->Position());
+                    return NULL;
+                }
+                if(0<=reader->ReadUint16(stream, &element->index)){
+                    error("TypeAnnotation Attribute", reader->Position());
+                    return NULL;
+                }
+
+            }
+            break;
+        case 0x42:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.catch_target.exception_table_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x43:
+        case 0x44:
+        case 0x45:
+        case 0x46:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.offset_target.offset)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        case 0x47:
+        case 0x48:
+        case 0x49:
+        case 0x4A:
+        case 0x4B:
+            if(0<=reader->ReadUint16(stream, &annotation->target_info.type_arugument_target.offset)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            if(0<=reader->ReadUint8(stream, &annotation->target_info.type_arugument_target.type_parameter_index)){
+                error("TypeAnnotation Attribute", reader->Position());
+                return NULL;
+            }
+            break;
+        default:
+            break;
+    }
+
+    if(0<=reader->ReadUint8(stream, &annotation->target_path.path_count)){
+        error("TypeAnnotation Attribute", reader->Position());
+        return NULL;
+    }
+    annotation->target_path.path = (_Path*)GC_malloc(sizeof(_Path)*annotation->target_path.path_count);
+    for(int i=0, i<annotation->target_path.path_count; i++){
+        _Path *p = &annotation->target_path.path[i]; 
+        if(0<=reader->ReadUint8(stream, &p->typepath_kind)){
+            error("TypeAnnotation Attribute", reader->Position());
+            return NULL;
+        }
+        if(0<=reader->ReadUint8(stream, &p->type_arugument_index)){
+            error("TypeAnnotation Attribute", reader->Position());
+            return NULL;
+        }
+    }
+    if(0<=reader->ReadUint8(stream, &annotation->target_path)){
+        error("TypeAnnotation Attribute", reader->Position());
+        return NULL;
+    }
+
+    if(0<=reader->ReadUint16(stream, &annotation->type_index)){
+        error("TypeAnnotation Attribute", reader->Position());
+        return NULL;
+    }
+    if(0<=reader->ReadUint16(stream, &annotation->element_value_pairs_count)){
+        error("TypeAnnotation Attribute", reader->Position());
+        return NULL;
+    }
+
+    annotation->pairs = (ElementValuePair*)GC_malloc(sizeof(ElementValuePair)*annotation->element_value_pairs_count);
+    for(int j=0;j<annotation->element_value_pairs_count;j++){
+        ElementValuePair *p = &annotation->pairs[j];
+        if(0<=reader->ReadUint16(stream, &p->element_name_index)){
+            error("Annotation", reader->Position());
+            return NULL;
+        }
+        if(NULL==parseElementValue(stream,&p->value)){
+            error("TypeAnnotation Attribute", reader->Position());
+            return NULL;
+        }
+    }   
+
+}
+
+static Attribute_RuntimeVisibleTypeAnnotations* attr_parse_runtimeVisibleTypeAnnotations(Stream *stream, ClassFile *classfile, uint16_t name_index){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    Attribute_RuntimeVisibleTypeAnnotations* attr = (Attribute_RuntimeVisibleTypeAnnotations*) GC_malloc(sizeof(Attribute_RuntimeVisibleTypeAnnotations));
+    attr->attribute_name_index = name_index;
+    if(0<=reader->ReadUint32(stream, &attr->attribute_length)){
+        error("RuntimeVisibleTypeAnnotations Attribute", reader->Position());
+        return NULL;
+    }
+    if(0<=reader->ReadUint8(stream, &attr->annotations_count)){
+        error("RuntimeVisibleTypeAnnotations Attribute", reader->Position());
+        return NULL;
+    }
+    attr->_annotations = (TypeAnnotaion*)GC_malloc(sizeof(TypeAnnotaion)*attr->annotaions_count); 
+    for(int i=0;i<attr->annotaions_count;i++){
+        if(NULL==parseTypeAnnotation(stream,&attr->annotations[i])){
+            error("RuntimeVisibleParameterAnnotations Attribute", reader->Position());
+            return NULL;
+        }
+    }
+    return attr;
+}
+
+static Attribute_RuntimeInisibleTypeAnnotations* attr_parse_runtimeInvisibleTypeAnnotations(Stream *stream, ClassFile *classfile, uint16_t name_index){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    Attribute_RuntimeInvisibleTypeAnnotations* attr = (Attribute_RuntimeInvisibleTypeAnnotations*) GC_malloc(sizeof(Attribute_RuntimeInvisibleTypeAnnotations));
+    attr->attribute_name_index = name_index;
+    if(0<=reader->ReadUint32(stream, &attr->attribute_length)){
+        error("RuntimeInvisibleTypeAnnotations Attribute", reader->Position());
+        return NULL;
+    }
+    if(0<=reader->ReadUint8(stream, &attr->annotations_count)){
+        error("RuntimeInvisibleTypeAnnotations Attribute", reader->Position());
+        return NULL;
+    }
+    attr->_annotations = (TypeAnnotaion*)GC_malloc(sizeof(TypeAnnotaion)*attr->annotaions_count); 
+    for(int i=0;i<attr->annotaions_count;i++){
+        if(NULL==parseTypeAnnotation(stream,&attr->annotations[i])){
+            error("RuntimeInvisibleParameterAnnotations Attribute", reader->Position());
+            return NULL;
+        }
+    }
+    return attr;
+}
+
+static Attribute_AnnotationDefault* attr_parse_annotationDefault(Stream *stream, ClassFile *classfile, uint16_t name_index){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    Attribute_AnnotationDefault* attr = (Attribute_AnnotationDefault*) GC_malloc(sizeof(Attribute_AnnotationDefault));
+    attr->attribute_name_index = name_index;
+    if(0<=reader->ReadUint32(stream, &attr->attribute_length)){
+        error("AnnotationDefault Attribute", reader->Position());
+        return NULL;
+    }
+    if(NULL==parseElementValue(stream,&p->value)){
+        error("AnnotationDefault Attribute", reader->Position());
+        return NULL;
+    }
+    return attr;
+}
+
+static Attribute_BootstrapMethods* attr_parse_bootstrapMethods(Stream *stream, ClassFile *classfile, uint16_t name_index){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    Attribute_BootstrapMethods* attr = (Attribute_BootstrapMethods*) GC_malloc(sizeof(Attribute_BootstrapMethods));
+    attr->attribute_name_index = name_index;
+    if(0<=reader->ReadUint32(stream, &attr->attribute_length)){
+        error("BootstrapMethod Attribute", reader->Position());
+        return NULL;
+    }
+    if(0<=reader->ReadUint16(stream, &attr->bootstrap_methods_count)){
+        error("BootstrapMethod Attribute", reader->Position());
+        return NULL;
+    }
+    attr->bootstrap_methods = (BootstrapMethod*)GC_malloc(sizeof(BootstrapMethod)*attr->bootstrap_methods_count);
+    for(int i=0;i<attr->bootstrap_methods_count;i++;){
+        BootstrapMethod *m = &attr->bootstrap_methods[i];
+        if(0<=reader->ReadUint16(stream, &m->bootstrap_method_ref)){
+            error("BootstrapMethod Attribute", reader->Position());
+            return NULL;
+        }
+        if(0<=reader->ReadUint16(stream, &m->arguments_count)){
+            error("BootstrapMethod Attribute", reader->Position());
+            return NULL;
+        }
+        m->arguments = (uint16_t*)GC_malloc(sizeof(uint16_t)*m->arguments_count);
+        for(int j=0;j<m->arguments_count;j++){
+            if(0<=reader->ReadUint16(stream, &m->arguments[j])){
+                error("BootstrapMethod Attribute", reader->Position());
+                return NULL;
+            }
+        }
+    }
+    return attr;
+}
+
+static Attribute_MethodParameters* attr_parse_methodParameters(Stream *stream, ClassFile *classfile, uint16_t name_index){
+    StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
+    Attribute_MethodParameters* attr = (Attribute_MethodParameters*) GC_malloc(sizeof(Attribute_MethodParameters));
+    attr->attribute_name_index = name_index;
+    if(0<=reader->ReadUint32(stream, &attr->attribute_length)){
+        error("MethodParameters Attribute", reader->Position());
+        return NULL;
+    }
+    if(0<=reader->ReadUint16(stream, &attr->parameters_count)){
+        error("BootstrapMethod Attribute", reader->Position());
+        return NULL;
+    }
+    attr->parameters= (_Parameter*)GC_malloc(sizeof(_Parameter)*attr->parameters_count);
+    for(int i=0;i<attr->parameters_count;i++;){
+        _Parameter *p = &attr->parameters[i];
+        if(0<=reader->ReadUint16(stream, &p->name_index)){
+            error("MethodParameters Attribute", reader->Position());
+            return NULL;
+        }
+        if(0<=reader->ReadUint16(stream, &p->access_flags)){
+            error("MethodParameters Attribute", reader->Position());
+            return NULL;
+        }
+    }
+    return attr;
+}
+
+
+
+
 
 static void error(char[] catagory, uint64_t position){
     slog(0, SLOG_ERROR, "Parsing %s Error at position %ld.", catagory,position);

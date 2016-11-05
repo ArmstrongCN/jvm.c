@@ -283,7 +283,7 @@ typedef struct{
 
 typedef struct{
     uint16_t count;
-    LocalvarElement* table;
+    LocalvarElement* elements;
 } LocalvarTarget;
 
 typedef struct{
@@ -305,7 +305,7 @@ typedef struct{
 } _Path;
 
 typedef struct{
-    uint8_t path_length;
+    uint8_t path_count;
     _Path* path;
 } TypePath;
 
