@@ -13,7 +13,7 @@
 
 EXTERN float ieee754_bin2float(uint32_t value);
 EXTERN double ieee754_bin2double(uint64_t value);
-EXTERN uint32_t utf8ascii_cmp(uint8_t[] utf8, uint8_t[] ascii);
-EXTERN uint32_t uft8_length(uint8_t[] utf8);
+EXTERN uint32_t utf8ascii_equals(uint8_t utf8[], uint8_t ascii[]);
+EXTERN uint32_t uft8_length(uint8_t utf8[]);
 
 #endif

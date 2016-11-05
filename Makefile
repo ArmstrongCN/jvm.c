@@ -1,16 +1,21 @@
-GCC_INCLUDE := src/include/:libs/slog/src/:libs/bdwgc/include
-
+_GCC_INCLUDE := src/include/ libs/slog/src/ libs/bdwgc/include
+GCC_INCLUDE := $(_GCC_INCLUDE:%=-I%)
 all:
 
 clean:
 	rm -rf build/
 
 build: clean
+	rm -rf build
 	mkdir build
-	gcc src/classfile/classfile.c -o build/jvm -I$(GCC_INCLUDE)
 
-filereader.a: libs/slog/src/libslog.a
-	gcc src/stream/filereader.c -o build/stream/filereader.a -I${GCC_INCLUDE}
+filereader.o: libs/slog/src/libslog.a
+	gcc $(GCC_INCLUDE) -c src/stream/filereader.c -o build/stream/filereader.o 
+
+classfile/classfile.o:
+	mkdir -p build/classfile
+	gcc $(GCC_INCLUDE) -c src/classfile/classfile.c -o build/classfile/classfile.o 
+
 
 libs/slog/src/libslog.a:
 	make -C libs/slog/src

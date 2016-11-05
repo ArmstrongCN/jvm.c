@@ -3,65 +3,65 @@
 
 #include <stdint.h>
 
-const uint32_t CONST_CLASSFILE_MAGIC = 0xCAFEBAABE;
+#define CONST_CLASSFILE_MAGIC  0xCAFEBABE
 
-const uint16_t CONST_CLASSFILE_ACCESS_PUBLIC = 0x0001;
-const uint16_t CONST_CLASSFILE_ACCESS_FINAL = 0x0010;
-const uint16_t CONST_CLASSFILE_ACCESS_SUPER = 0x0020;
-const uint16_t CONST_CLASSFILE_ACCESS_INTERFACE = 0x0200;
-const uint16_t CONST_CLASSFILE_ACCESS_ABSTRACT = 0x0400;
-const uint16_t CONST_CLASSFILE_ACCESS_SYNTHETIC = 0x1000;
-const uint16_t CONST_CLASSFILE_ACCESS_ANNOTATION = 0x2000;
-const uint16_t CONST_CLASSFILE_ACCESS_ENUM = 0x4000;
+#define CONST_CLASSFILE_ACCESS_PUBLIC  0x0001
+#define CONST_CLASSFILE_ACCESS_FINAL  0x0010
+#define CONST_CLASSFILE_ACCESS_SUPER  0x0020
+#define CONST_CLASSFILE_ACCESS_INTERFACE  0x0200
+#define CONST_CLASSFILE_ACCESS_ABSTRACT  0x0400
+#define CONST_CLASSFILE_ACCESS_SYNTHETIC  0x1000
+#define CONST_CLASSFILE_ACCESS_ANNOTATION  0x2000
+#define CONST_CLASSFILE_ACCESS_ENUM  0x4000
 
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_CLASS = 7;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_FIELD_REF = 9;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_METHOD_REF = 10;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_INTERFACE_METHOD_REF = 11;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_STRING = 8;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_INTEGER = 3;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_FLOAT = 4;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_LONG = 5;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_DOUBLE = 6;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_NAME_AND_TYPE = 12;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_UTF8 = 1;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_METHOD_HANDLE = 15;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_METHOD_TYPE = 16;
-const uint8_t CONST_CONSTANTPOOLINFO_TAG_INVOKE_DYNAMIC = 18;
+#define CONST_CONSTANTPOOLINFO_TAG_CLASS  7
+#define CONST_CONSTANTPOOLINFO_TAG_FIELD_REF  9
+#define CONST_CONSTANTPOOLINFO_TAG_METHOD_REF  10
+#define CONST_CONSTANTPOOLINFO_TAG_INTERFACE_METHOD_REF  11
+#define CONST_CONSTANTPOOLINFO_TAG_STRING  8
+#define CONST_CONSTANTPOOLINFO_TAG_INTEGER  3
+#define CONST_CONSTANTPOOLINFO_TAG_FLOAT  4
+#define CONST_CONSTANTPOOLINFO_TAG_LONG  5
+#define CONST_CONSTANTPOOLINFO_TAG_DOUBLE  6
+#define CONST_CONSTANTPOOLINFO_TAG_NAME_AND_TYPE  12
+#define CONST_CONSTANTPOOLINFO_TAG_UTF8  1
+#define CONST_CONSTANTPOOLINFO_TAG_METHOD_HANDLE  15
+#define CONST_CONSTANTPOOLINFO_TAG_METHOD_TYPE  16
+#define CONST_CONSTANTPOOLINFO_TAG_INVOKE_DYNAMIC  18
 
-const uint16_t CONST_FIELD_ACCESS_PUBLIC = 0x0001;
-const uint16_t CONST_FIELD_ACCESS_PRIVATE = 0x0002;
-const uint16_t CONST_FIELD_ACCESS_PROTECTED = 0x0004;
-const uint16_t CONST_FIELD_ACCESS_STATIC = 0x0008;
-const uint16_t CONST_FIELD_ACCESS_FINAL = 0x0010;
-const uint16_t CONST_FIELD_ACCESS_VOLATILE = 0x0040;
-const uint16_t CONST_FIELD_ACCESS_TRANSIENT = 0x0080;
-const uint16_t CONST_FIELD_ACCESS_SYNTHETIC = 0x1000;
-const uint16_t CONST_FIELD_ACCESS_ENUM = 0x4000;
+#define CONST_FIELD_ACCESS_PUBLIC  0x0001
+#define CONST_FIELD_ACCESS_PRIVATE  0x0002
+#define CONST_FIELD_ACCESS_PROTECTED  0x0004
+#define CONST_FIELD_ACCESS_STATIC  0x0008
+#define CONST_FIELD_ACCESS_FINAL  0x0010
+#define CONST_FIELD_ACCESS_VOLATILE  0x0040
+#define CONST_FIELD_ACCESS_TRANSIENT  0x0080
+#define CONST_FIELD_ACCESS_SYNTHETIC  0x1000
+#define CONST_FIELD_ACCESS_ENUM  0x4000
 
-const uint16_t CONST_METHOD_ACCESS_PUBLIC = 0x0001;
-const uint16_t CONST_METHOD_ACCESS_PRIVATE = 0x0002;
-const uint16_t CONST_METHOD_ACCESS_PROTECTED = 0x0004;
-const uint16_t CONST_METHOD_ACCESS_STATIC = 0x0008;
-const uint16_t CONST_METHOD_ACCESS_FINAL = 0x0010;
-const uint16_t CONST_METHOD_ACCESS_SYNCHRONIZED = 0x0020;
-const uint16_t CONST_METHOD_ACCESS_BRIDGE = 0x0040;
-const uint16_t CONST_METHOD_ACCESS_VARARGS = 0x0080;
-const uint16_t CONST_METHOD_ACCESS_NATIVE = 0x0100;
-const uint16_t CONST_METHOD_ACCESS_ABSTRACT = 0x0400;
-const uint16_t CONST_METHOD_ACCESS_STRICT = 0x0800;
-const uint16_t CONST_METHOD_ACCESS_SYNTHETIC = 0x1000;
+#define CONST_METHOD_ACCESS_PUBLIC  0x0001
+#define CONST_METHOD_ACCESS_PRIVATE  0x0002
+#define CONST_METHOD_ACCESS_PROTECTED  0x0004
+#define CONST_METHOD_ACCESS_STATIC  0x0008
+#define CONST_METHOD_ACCESS_FINAL  0x0010
+#define CONST_METHOD_ACCESS_SYNCHRONIZED  0x0020
+#define CONST_METHOD_ACCESS_BRIDGE  0x0040
+#define CONST_METHOD_ACCESS_VARARGS  0x0080
+#define CONST_METHOD_ACCESS_NATIVE  0x0100
+#define CONST_METHOD_ACCESS_ABSTRACT  0x0400
+#define CONST_METHOD_ACCESS_STRICT  0x0800
+#define CONST_METHOD_ACCESS_SYNTHETIC  0x1000
 
-const uint16_t CONST_INNERCLASS_ACCESS_PUBLIC = 0x0001;
-const uint16_t CONST_INNERCLASS_ACCESS_PRIVATE = 0x0002;
-const uint16_t CONST_INNERCLASS_ACCESS_PROTECTED = 0x0004;
-const uint16_t CONST_INNERCLASS_ACCESS_STATIC = 0x0008;
-const uint16_t CONST_INNERCLASS_ACCESS_FINAL = 0x0010;
-const uint16_t CONST_INNERCLASS_ACCESS_INTERFACE = 0x0200;
-const uint16_t CONST_INNERCLASS_ACCESS_ABSTRACT = 0x0400;
-const uint16_t CONST_INNERCLASS_ACCESS_SYNTHETIC = 0x1000;
-const uint16_t CONST_INNERCLASS_ACCESS_ANNOTATION = 0x2000;
-const uint16_t CONST_INNERCLASS_ACCESS_ENUM = 0x4000;
+#define CONST_INNERCLASS_ACCESS_PUBLIC  0x0001
+#define CONST_INNERCLASS_ACCESS_PRIVATE  0x0002
+#define CONST_INNERCLASS_ACCESS_PROTECTED  0x0004
+#define CONST_INNERCLASS_ACCESS_STATIC  0x0008
+#define CONST_INNERCLASS_ACCESS_FINAL  0x0010
+#define CONST_INNERCLASS_ACCESS_INTERFACE  0x0200
+#define CONST_INNERCLASS_ACCESS_ABSTRACT  0x0400
+#define CONST_INNERCLASS_ACCESS_SYNTHETIC  0x1000
+#define CONST_INNERCLASS_ACCESS_ANNOTATION  0x2000
+#define CONST_INNERCLASS_ACCESS_ENUM  0x4000
 
 typedef struct{
     uint16_t attribute_name_index;
@@ -92,7 +92,7 @@ typedef struct{
 typedef struct{
     uint8_t attribute_name_index;
     uint32_t attribute_length;
-    uint16_t excptions_count;
+    uint16_t exceptions_count;
     uint16_t* exception_indexes;
 } Attribute_Exceptions;
 
@@ -187,14 +187,15 @@ typedef struct{
     uint32_t attribute_length;
 } Attribute_Deprecated;
 
-struct ElementValuePair;
+typedef struct _ElementValuePair ElementValuePair;
 typedef struct{
     uint16_t type_index;
     uint16_t element_value_pairs_count;
-    struct ElementValuePair* pairs;
+    ElementValuePair* pairs;
 } Annotation;
 
-typedef struct{
+typedef struct _ElementValue ElementValue;
+struct _ElementValue{
     uint8_t tag;
     union {
         uint16_t const_value_index;
@@ -209,15 +210,15 @@ typedef struct{
 
         struct{
             uint16_t values_count;
-            struct ElementValue* values;
+            ElementValue* values;
         } array_value; 
     } value;
-} ElementValue;
+};
 
-typedef struct{
+struct _ElementValuePair{
     uint16_t element_name_index;
     ElementValue value;
-} ElementValuePair;
+};
 
 typedef struct{
     uint16_t attribute_name_index;
@@ -340,7 +341,7 @@ typedef struct{
     uint16_t attribute_name_index;
     uint32_t attribute_length;
     uint16_t annotations_count;
-    TypeAnnotation annotations;
+    TypeAnnotation* annotations;
 } Attribute_RuntimeInvisibleTypeAnnotations;
 
 typedef struct{
@@ -395,7 +396,7 @@ typedef struct{
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
-    uint8_t attributes_count;
+    uint16_t attributes_count;
     void* attributes;
 } FieldInfo;
 
@@ -483,12 +484,12 @@ typedef struct{
 typedef struct{
     uint8_t tag;
     uint8_t reference_kind;
-    uint32_t reference_index;
+    uint16_t reference_index;
 } Constant_MethodHandleInfo;
 
 typedef struct{
     uint8_t tag;
-    uint16_t define;
+    uint16_t descriptor_index;
 } Constant_MethodTypeInfo;
 
 typedef struct{
@@ -496,14 +497,5 @@ typedef struct{
     uint16_t bootstrap_method_attr_index;
     uint16_t name_and_type_index;
 } Constant_InvokeDynamicInfo;
-
-#ifdef INCLUDE_CLASSFILE_OP_H_SELF
-#define OP_EXTERN
-#else
-#define OP_EXTERN extern
-#endif
-
-OP_EXTERN uint8_t* CLZFILE_cp_getUTF8(void **constant_pool, uint16_t index){
-
 
 #endif
