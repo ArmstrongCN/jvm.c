@@ -56,7 +56,6 @@ static Attribute_RuntimeInvisibleTypeAnnotations* attr_parse_runtimeInvisibleTyp
 static Attribute_AnnotationDefault* attr_parse_annotationDefault(Stream *stream, ClassFile *classfile, uint16_t name_index);
 static Attribute_BootstrapMethods* attr_parse_bootstrapMethods(Stream *stream, ClassFile *classfile, uint16_t name_index);
 static Attribute_MethodParameters* attr_parse_methodParameters(Stream *stream, ClassFile *classfile, uint16_t name_index);
-static void error(char formatStr[], ...);
 
 
 
@@ -1428,15 +1427,4 @@ static Attribute_MethodParameters* attr_parse_methodParameters(Stream *stream, C
 		}
 	}
 	return attr;
-}
-
-
-
-
-
-static void error(char formatStr[], ...){
-    va_list args;
-    va_start(args,formatStr);
-    slog(0, SLOG_ERROR, formatStr, args);
-    va_end(args);
 }

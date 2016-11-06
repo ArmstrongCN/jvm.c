@@ -14,6 +14,15 @@ float ieee754_bin2float(uint32_t value){
     return un.fvalue;
 }
 
+uint32_t ieee754_float2bin(float value){
+    union{
+        uint32_t ivalue;
+        float fvalue;
+    } un;
+    un.fvalue = value;
+    return un.ivalue;
+}
+
 double ieee754_bin2double(uint64_t value){
     union{
         uint64_t ivalue;
@@ -21,6 +30,15 @@ double ieee754_bin2double(uint64_t value){
     } un;
     un.ivalue = value;
     return un.fvalue;
+}
+
+uint64_t ieee754_double2bin(double value){
+    union{
+        uint64_t ivalue;
+        double fvalue;
+    } un;
+    un.fvalue = value;
+    return un.ivalue;
 }
 
 int utf8ascii_equals(uint8_t[] utf8, uint8_t[] ascii){
@@ -43,4 +61,11 @@ int uft8_length(uint8_t[] utf8){
         i++;
     }
     return count;
+}
+
+void error(char formatStr[], ...){
+    va_list args;
+    va_start(args,formatStr);
+    slog(0, SLOG_ERROR, formatStr, args);
+    va_end(args);
 }
