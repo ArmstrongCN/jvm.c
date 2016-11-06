@@ -3,6 +3,8 @@
 #include "slog.h"
 #include "gc.h"
 
+
+#define INCLUDE_CLASSFILE_SELF 1
 #include "classfile/classfile.h"
 #include "classfile/op.h"
 #include "stream.h"
@@ -10,7 +12,6 @@
 #include "utils.h"
 
 
-ClassFile *LoadClassFile(Stream *stream);
 static void* parseConstantPool(Stream *stream, uint16_t size);
 static Constant_ClassInfo* cp_parse_classInfo(Stream *stream);
 static Constant_FieldRefInfo* cp_parse_filedRefInfo(Stream* stream);
@@ -19,7 +20,7 @@ static Constant_InterfaceMethodRefInfo* cp_parse_interfaceMethodRefInfo(Stream* 
 static Constant_StringInfo* cp_parse_stringInfo(Stream* stream);
 static Constant_IntegerInfo* cp_parse_intergerInfo(Stream* stream);
 static Constant_FloatInfo* cp_parse_floatInfo(Stream* stream);
-static Constant_LongInfo* cp_parse_fongInfo(Stream* stream);
+static Constant_LongInfo* cp_parse_longInfo(Stream* stream);
 static Constant_DoubleInfo* cp_parse_doubleInfo(Stream* stream);
 static Constant_NameAndTypeInfo* cp_parse_nameAndTypeInfo(Stream* stream);
 static Constant_UTF8Info* cp_parse_utf8Info(Stream* stream);
@@ -364,7 +365,7 @@ static Constant_FloatInfo* cp_parse_floatInfo(Stream* stream){
 	return floatInfo;
 }
 
-static Constant_LongInfo* cp_parse_fongInfo(Stream* stream){
+static Constant_LongInfo* cp_parse_longInfo(Stream* stream){
 	StreamReaderOp *reader = (StreamReaderOp*)stream->reader;
 	Constant_LongInfo * longInfo = (Constant_LongInfo*)GC_malloc(sizeof(Constant_LongInfo));
 	longInfo->tag = CONST_CONSTANTPOOLINFO_TAG_LONG;

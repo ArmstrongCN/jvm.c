@@ -1,11 +1,11 @@
 #ifndef H_CLASSFILE_OP
 #define H_CLASSFILE_OP 1
 
-#ifdef INCLUDE_UTILS_H_SELF
-#define EXTERN
+#ifdef INCLUDE_CLASSFILE_OP_SELF
+#define CLASSFILE_OP_EXTERN
 #else
-#define EXTERN extern
+#define CLASSFILE_OP_EXTERN extern
 #endif
 
-EXTERN uint8_t* CLZFILE_cp_getUTF8(void **constant_pool, uint16_t index);
+CLASSFILE_OP_EXTERN uint8_t* CLZFILE_cp_getUTF8(void **constant_pool, uint16_t index);
 #endif

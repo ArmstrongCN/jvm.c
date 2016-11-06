@@ -3,6 +3,12 @@
 
 #include <stdint.h>
 
+#ifdef INCLUDE_CLASSFILE_SELF_
+#define CLASSFILE_EXTERN
+#else
+#define CLASSFILE_EXTERN extern
+#endif
+
 #define CONST_CLASSFILE_MAGIC  0xCAFEBABE
 
 #define CONST_CLASSFILE_ACCESS_PUBLIC  0x0001
@@ -497,5 +503,8 @@ typedef struct{
     uint16_t bootstrap_method_attr_index;
     uint16_t name_and_type_index;
 } Constant_InvokeDynamicInfo;
+
+#include "stream.h"
+CLASSFILE_EXTERN ClassFile *LoadClassFile(Stream *stream);
 
 #endif
