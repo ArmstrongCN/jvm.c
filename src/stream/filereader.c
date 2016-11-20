@@ -9,11 +9,11 @@ typedef struct{
     FILE *fp;
 } FileStream;
 
-static int reader_readUint8(Stream *stream, uint8_t *ptr){
+static int filestream_readUint8(Stream *stream, uint8_t *ptr){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     if(1!=fread(ptr,1,sizeof(uint8_t),fp)){
         slog(0,SLOG_WARN,"Reading file error");
@@ -22,11 +22,11 @@ static int reader_readUint8(Stream *stream, uint8_t *ptr){
     return 1;
 }
 
-static int reader_readUint16(Stream *stream, uint16_t *ptr){
+static int filestream_readUint16(Stream *stream, uint16_t *ptr){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     uint8_t buf[2];
     if(2!=fread(buf,2,sizeof(uint18_t),fp)){
@@ -37,11 +37,11 @@ static int reader_readUint16(Stream *stream, uint16_t *ptr){
     return 1;
 }
 
-static int reader_readUint32(Stream *stream, uint32_t *ptr){
+static int filestream_readUint32(Stream *stream, uint32_t *ptr){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     uint8_t buf[4];
     if(4!=fread(buf,4,sizeof(uint8_t),fp)){
@@ -52,11 +52,11 @@ static int reader_readUint32(Stream *stream, uint32_t *ptr){
     return 1;
 }
 
-static int reader_readUint64(Stream *stream, uint64_t *ptr){
+static int filestream_readUint64(Stream *stream, uint64_t *ptr){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     uint8_t buf[8];
     if(8!=fread(buf,8,sizeof(uint8_t),fp)){
@@ -68,11 +68,11 @@ static int reader_readUint64(Stream *stream, uint64_t *ptr){
     return 1;
 }
 
-static int reader_readBytes(Stream *stream,uint32_t size, uint8_t *ptr){
+static int filestream_readBytes(Stream *stream,uint32_t size, uint8_t *ptr){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     if(size!=fread(ptr,size,sizeof(uint8_t),fp)){
         slog(0,SLOG_WARN,"Reading file error");
@@ -81,33 +81,33 @@ static int reader_readBytes(Stream *stream,uint32_t size, uint8_t *ptr){
     return size;
 }
 
-static long int reader_position(Stream *stream){
+static long int filestream_position(Stream *stream){
     File *fp = ((FileStream*)stream->data)->fp;
     if(0==fp){
         slog(0,SLOG_WARN, "Empty file handler.")
-        return EOF;
+            return EOF;
     }
     return ftell(stream);
 }
 
-static int reader_skip(Stream *stream,long offset){
+static int filestream_skip(Stream *stream,long offset){
     return !fseek(((FileStream*)stream->data)->fp,offset,SEEK_CUR);
 }
 
-static int reader_reset(Stream *stream){
+static int filestream_reset(Stream *stream){
     return !fseek(((FileStream*)stream->data)->fp,0,SEEK_SET);
 }
 
-static StreamReaderOp* newStreamReaderOp(){
+static StreamReaderOp* newFileStreamReaderOp(){
     StreamReaderOp* op = (StreamReaderOp*)GC_malloc(sizeof(StreamReaderOp));
-    op->ReadUint8 = reader_readUint8;
-    op->ReadUint16 = reader_readUint16;
-    op->ReadUint32 = reader_readUint16;
-    op->ReadUint64 = reader_readUint64;
-    op->ReadBytes = reader_readBytes;
-    op->Position = reader_position;    
-    op->Skip = reader_skip;
-    op->Reset = reader_reset;
+    op->ReadUint8 = filestream_readUint8;
+    op->ReadUint16 = filestream_readUint16;
+    op->ReadUint32 = filestream_readUint16;
+    op->ReadUint64 = filestream_readUint64;
+    op->ReadBytes = filestream_readBytes;
+    op->Position = filestream_position;    
+    op->Skip = filestream_skip;
+    op->Reset = filestream_reset;
     return op;
 }
 
@@ -116,11 +116,13 @@ Stream* FileReader_New(char* filepath){
         slog(0, SLOG_ERROR, "Unable to open file for reading");
         return NULL;
     }
-   Stream *stream = (Stream *)GC_malloc(sizeof(Stream));
-   stream->reader = newStreamReaderOp();
-   stream->writer = NULL;
-   ((FileStream*)stream->data)->filepath = filepath;   
-   ((FileStream*)stream->data)->fp = fp;   
+    Stream *stream = (Stream *)GC_malloc(sizeof(Stream));
+    stream->reader = newFileStreamReaderOp();
+    stream->writer = NULL;
+    FileStream* filestream = (FileStream *)GC_malloc(sizeof(FileStream));
+    stream->data = filestream;
+    ((FileStream*)stream->data)->filepath = filepath;   
+    ((FileStream*)stream->data)->fp = fp;   
 }
 
 void FileReader_Distroy(Stream *stream){
